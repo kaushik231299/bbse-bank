@@ -12,7 +12,7 @@ contract("BBSEBank", (accounts) => {
      */
     beforeEach(async () => {
       bbseToken = await BBSEToken.new();
-      bbseBank = await BBSEBank.new(bbseToken.address, 10);
+      bbseBank = await BBSEBank.new(bbseToken.address, 10); // Sets the yearly return rate to 10
       await bbseToken.passMinterRole(bbseBank.address, { from: accounts[0] });
     });
 
@@ -24,8 +24,8 @@ contract("BBSEBank", (accounts) => {
       await bbseBank.deposit({ value: 10 ** 18, from: accounts[1] }); // Decimal is set to 18 by default in ERC20 OpenZeppelin (Unit = Wei)
       const investor = await bbseBank.investors(accounts[1]);
       assert.equal(investor.hasActiveDeposit, true);
-      assert.equal(investor.amount.toString(), (10 ** 18).toString());
-      expect(investor.startTime.toNumber()).to.be.above(0);
+      assert.equal(Number(investor.amount), 10 ** 18); // Since the amount is a big number (BN), it is better be cast to a Number for convenience
+      expect(Number(investor.startTime)).to.be.above(0);
       expect(Number(await web3.eth.getBalance(bbseBank.address))).to.be.above(
         0
       ); // Use web3 to find the Ether balance of any account
@@ -49,7 +49,7 @@ contract("BBSEBank", (accounts) => {
       assert.equal(investor.hasActiveDeposit, false);
       assert.equal(investor.amount, 0);
 
-      // Only the deposited amount by account 2 should be left in the contract balance
+      // Only the deposited amount by accounts[2] should be left in the contract balance
       assert.equal(
         Number(await web3.eth.getBalance(bbseBank.address)),
         10 ** 18
