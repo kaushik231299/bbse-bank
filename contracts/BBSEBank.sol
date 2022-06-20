@@ -60,7 +60,7 @@ contract BBSEBank {
   * Investor can't have an already active deposit.
   */
   function deposit() payable public{
-    require(msg.value >= 10**18, "Minimum deposit amount is 1 Ether");
+    require(msg.value >= MIN_DEPOSIT_AMOUNT, "Minimum deposit amount is 1 Ether");
     require(investors[msg.sender].hasActiveDeposit != true, "Account can't have multiple active deposits");
 
     investors[msg.sender].amount = msg.value;
