@@ -86,15 +86,15 @@ contract BBSEBank {
     uint interestPerSecond = interestPerSecondForMinDeposit * (depositedAmount / MIN_DEPOSIT_AMOUNT);
     uint interest = interestPerSecond * depositDuration;
 
-    // Send back deposited Ether to investor
-    payable(msg.sender).transfer(depositedAmount);
-    // Mint BBSE Tokens to investor, to pay out the interest
-    bbseTokenContract.mint(msg.sender, interest);
-
     // Reset the investor object
     investor.amount = 0;
     investor.hasActiveDeposit = false;
     investor.startTime = 0;
+    
+    // Send back deposited Ether to investor
+    payable(msg.sender).transfer(depositedAmount);
+    // Mint BBSE Tokens to investor, to pay out the interest
+    bbseTokenContract.mint(msg.sender, interest);
   }
   
 }
