@@ -13,8 +13,8 @@ contract BBSEBank {
   // Seconds in a year
   uint32 public constant YEAR_SECONDS = 31536000; 
 
-  // Average block time in Ethereum
-  uint8 public constant AVG_BLOCK_TIME = 14;
+  // Block time in PoS-Ethereum
+  uint8 public constant BLOCK_TIME = 12;
   
   // Minimum deposit amount (1 Ether, expressed in Wei)
   uint public constant MIN_DEPOSIT_AMOUNT = 10**18;
@@ -80,7 +80,7 @@ contract BBSEBank {
     require(investors[msg.sender].hasActiveDeposit == true, "Account must have an active deposit to withdraw");
     Investor storage investor = investors[msg.sender];
     uint depositedAmount = investor.amount;
-    uint depositDuration = (block.number - investor.startTime) * AVG_BLOCK_TIME;
+    uint depositDuration = (block.number - investor.startTime) * BLOCK_TIME;
 
     // Calculate interest per second
     uint interestPerSecond = interestPerSecondForMinDeposit * (depositedAmount / MIN_DEPOSIT_AMOUNT);
