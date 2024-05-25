@@ -26,6 +26,7 @@ contract BBSEToken is ERC20 {
     require(msg.sender == minter, "You are not the minter");
 		minter = _minter;
 	}
+...
 
   /**
   * @dev Mints new tokens.
